@@ -1,0 +1,58 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Replicator",
+  "version": "0.1.0",
+  "identifier": "rip.replicator",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Replicator",
+        "width": 1640,
+        "height": 1020,
+        "minWidth": 960,
+        "minHeight": 640,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' data:; font-src 'self'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis", "app", "dmg", "appimage", "deb", "rpm"],
+    "createUpdaterArtifacts": true,
+    "publisher": "Isomerc",
+    "copyright": "Copyright (c) 2026 Isomerc",
+    "license": "MIT",
+    "licenseFile": "../LICENSE",
+    "category": "Utility",
+    "shortDescription": "EVE Online UI settings manager",
+    "longDescription": "Copy EVE Online UI settings between characters, save them as reusable templates, and keep a git-versioned history you can roll back to.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "signingIdentity": "-"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDUxNDk3M0I5Qzk5QjNFMzYKUldRMlBwdkp1WE5KVWNoVW9LTVViMkp1REU1YVZrOFJrME94eERkaVFRUm5OQnFDMjBPbjZRMy8K",
+      "endpoints": [
+        "https://github.com/isomerc/replicator-redux/releases/latest/download/latest.json"
+      ]
+    }
+  }
+}

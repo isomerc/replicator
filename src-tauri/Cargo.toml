@@ -1,0 +1,57 @@
+[package]
+name = "replicator"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.77"
+license = "MIT"
+description = "Copy and version EVE Online UI settings across characters"
+publish = false
+
+[lib]
+name = "replicator_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["image-png"] }
+tauri-plugin-dialog = "2"
+tauri-plugin-opener = "2"
+tauri-plugin-updater = "2"
+tauri-plugin-process = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "fs", "sync", "time"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
+git2 = { version = "0.19", default-features = false, features = ["vendored-libgit2", "vendored-openssl", "https"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+dirs = "5"
+walkdir = "2"
+base64 = "0.22"
+thiserror = "1"
+# The subscriber surfaces the app's own warnings plus logs from
+# tauri/wry/reqwest via RUST_LOG.
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+chrono = { version = "0.4", features = ["serde"] }
+sysinfo = "0.32"
+rodio = { version = "0.20", default-features = false }
+blue-marshal = "1.0.1"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+sha2 = "0.10"
+
+[dev-dependencies]
+tempfile = "3"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

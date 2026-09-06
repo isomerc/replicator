@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.tsbuildinfo
+vite.config.d.ts
+vite.config.js
+src-tauri/target/
+src-tauri/gen/
+.DS_Store
+.direnv/
+.envrc.local
+result
+result-*

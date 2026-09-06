@@ -1,0 +1,93 @@
+name: CI
+
+# Runs on every push to master and every pull request. Linux-only on
+# purpose: on a private repo GitHub bills macOS at 10x and Windows at
+# 2x - worth revisiting once the repo is public and runners are free.
+# The cross-platform builds live in release.yml and only fire on a
+# version tag.
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+# A new push to the same branch cancels the run already in flight, so
+# rapid-fire commits don't stack up billable minutes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Frontend and Rust share one job because they aren't independent:
+  # `tauri::generate_context!()` embeds the built frontend into the
+  # binary at COMPILE time, so `dist/` must exist before cargo runs at
+  # all - including for `cargo test`. `dist/` is gitignored, so CI has
+  # to build it. Splitting these would mean building the frontend twice.
+  check:
+    name: Check
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      # Fails fast on characters outside the repo's policy (see the
+      # script header) - needs only node, no dependencies.
+      - name: Character policy
+        run: node scripts/ascii_guard.mjs
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      # `pnpm build` is `tsc -b && vite build` - typechecks, then writes
+      # dist/ for generate_context! to embed.
+      - name: Typecheck and build frontend
+        run: pnpm build
+
+      # libasound2-dev is required by rodio/cpal; without it the audio
+      # backend fails to build rather than degrading gracefully.
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libjavascriptcoregtk-4.1-dev \
+            libsoup-3.0-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            libasound2-dev \
+            libssl-dev \
+            build-essential \
+            patchelf \
+            file
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      # Formatting needs no build, so run it before the slow steps.
+      - name: Formatting
+        working-directory: ./src-tauri
+        run: cargo fmt --check
+
+      # --all-targets covers the binary and the test code too, not just
+      # the lib.
+      - name: Clippy
+        working-directory: ./src-tauri
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Tests
+        working-directory: ./src-tauri
+        run: cargo test --lib

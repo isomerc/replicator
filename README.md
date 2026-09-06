@@ -79,6 +79,10 @@ bundler needs an FHS environment it will not find; add
 
 ## Development
 
+The Nix development shell sets `TZ=UTC`, including when loaded through
+direnv, so new Git timestamps do not disclose your local timezone.
+Commits made outside that shell still use their environment's timezone.
+
 ```bash
 pnpm tauri dev        # run against the Vite dev server
 ```

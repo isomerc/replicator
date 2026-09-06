@@ -83,9 +83,8 @@ pub fn all_user_files(settings_dir: &Path) -> Vec<PathBuf> {
 /// the existing file is truncated in place (preserving its inode),
 /// with no backup, no temp file and no atomic rename.
 ///
-/// This mirrors the bash predecessor at
-/// `~/dev/isomerc/eve_online/replicator/replicator.sh`. An earlier
-/// version wrote via `.tmp` + rename (which changes the inode) plus a
+/// This mirrors the original bash implementation. An earlier version
+/// wrote via `.tmp` + rename (which changes the inode) plus a
 /// `.replicator-bak` sidecar; both deviate from `cp` and may matter
 /// under Wine/Proton, so don't reintroduce them.
 pub fn write_profile_bytes(target: &Path, bytes: &[u8]) -> AppResult<()> {

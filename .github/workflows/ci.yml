@@ -1,10 +1,8 @@
 name: CI
 
-# Runs on every push to master and every pull request. Linux-only on
-# purpose: on a private repo GitHub bills macOS at 10x and Windows at
-# 2x - worth revisiting once the repo is public and runners are free.
-# The cross-platform builds live in release.yml and only fire on a
-# version tag.
+# Runs on every push to master and every pull request. Linux-only:
+# the cross-platform builds live in release.yml, which fires on a
+# version tag and is the real test of the macOS and Windows toolchains.
 on:
   push:
     branches: [master]

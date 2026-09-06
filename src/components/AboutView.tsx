@@ -5,7 +5,7 @@ import { useI18n } from "../i18n";
 
 const DOCS = "https://replicator.rip/docs";
 const SITE = "https://replicator.rip";
-const REPO = "https://github.com/isomerc/replicator-redux";
+const REPO = "https://github.com/isomerc/replicator";
 const DISCORD = "https://discord.gg/N82KJcS47f";
 
 /** The back of the pack: links, credits, small print. */

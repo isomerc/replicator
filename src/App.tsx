@@ -366,7 +366,7 @@ export default function App() {
           <button
             className="footline-link"
             onClick={() =>
-              openUrl("https://github.com/isomerc/replicator-redux").catch(
+              openUrl("https://github.com/isomerc/replicator").catch(
                 () => {}
               )
             }

@@ -46,7 +46,7 @@ Windows, macOS, and Linux.
 ## Download
 
 Installers are on the
-[releases page](https://github.com/isomerc/replicator-redux/releases/latest):
+[releases page](https://github.com/isomerc/replicator/releases/latest):
 a `-setup.exe` for Windows, `.dmg` for macOS, `.AppImage` / `.deb` /
 `.rpm` for Linux. The builds are unsigned, so macOS and Windows warn on
 first launch - the [install notes](https://replicator.rip/docs/installation)
@@ -61,8 +61,8 @@ webkit2gtk 4.1, GTK 3, and ALSA development headers. The repository ships a
 Nix flake that provides all of it.
 
 ```bash
-git clone https://github.com/isomerc/replicator-redux
-cd replicator-redux
+git clone https://github.com/isomerc/replicator
+cd replicator
 
 # with nix + direnv (otherwise install the toolchains yourself)
 direnv allow

@@ -5,8 +5,7 @@ use serde::{Deserialize, Serialize};
 /// contract as nicotine's: the UI shows a green LATEST VERSION when
 /// up to date, a red link to the release when behind, and nothing at
 /// all when the check errors (offline, private repo, rate limit).
-const LATEST_RELEASE_API: &str =
-    "https://api.github.com/repos/isomerc/replicator/releases/latest";
+const LATEST_RELEASE_API: &str = "https://api.github.com/repos/isomerc/replicator/releases/latest";
 
 pub const CURRENT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
